@@ -46,7 +46,6 @@ experiment_config.default.uniform_epsilon = 1
 experiment_config.weights_initialization = EasyDict()
 experiment_config.weights_initialization.type = WeightsInitType.normal
 experiment_config.weights_initialization.kwargs = {'sigma': 0.01}  # Or e.g. {'epsilon': 1} for WeightsInitType.uniform
-#experiment_config.weights_initialization.kwargs = {'epsilon': 0.1}
 experiment_config.weights_initialization.zero_bias = True
 
 # Validation

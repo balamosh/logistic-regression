@@ -84,10 +84,7 @@ class AgglomerativeClustering:
             np.ndarray: The vector (of size equal to the number of other clusters) of distances between
                             the observed cluster and the others.
         """
-        # TODO: Compute distances between observed_cluster (a list of data sample indices from the newly formed cluster)
-        #           and other_clusters (np.ndarray of other cluster indices) w.r.t the formula from the docstring,
-        #           return the result
-        raise NotImplementedError
+        return np.nanmax(self.distances[np.ix_(observed_cluster, other_clusters)], axis=0)
 
     def average_link(self, observed_cluster: list, other_clusters: np.ndarray) -> np.ndarray:
         """Average Linkage method.
@@ -111,10 +108,7 @@ class AgglomerativeClustering:
             np.ndarray: The vector (of size equal to the number of other clusters) of distances between
                             the observed cluster and the others.
         """
-        # TODO: Compute distances between observed_cluster (a list of data sample indices from the newly formed cluster)
-        #           and other_clusters (np.ndarray of other cluster indices) w.r.t the formula from the docstring,
-        #           return the result
-        raise NotImplementedError
+        return np.nanmean(self.distances[np.ix_(observed_cluster, other_clusters)], axis=0)
 
     def stop(self) -> bool:
         """Stopping criteria.
@@ -137,9 +131,6 @@ class AgglomerativeClustering:
                 - |C| - the number of all clusters at the moment,
                 - N - the specified threshold.
         """
-        # TODO: Implement stopping conditions for both types of StoppingCriteria w.r.t the formula from the docstring,
-        #             return the boolean indicating whether to stop at a current iteration or keep merging. Take
-        #             thresholds from self.config.stopping_criteria_params
         if self.config.stopping_criteria == StoppingCriteria.distance:
             return self.current_distance > self.config.stopping_criteria_params.get('distance_th')
         elif self.config.stopping_criteria == StoppingCriteria.clusters_num:
@@ -159,9 +150,6 @@ class AgglomerativeClustering:
         """
         self._init_clusters()
         merge_distances, distance_differences, previous_distance = [], [], None
-        # TODO: At each step of a clusters merging loop:
-        #       After loop stopped, get the formed cluster labels for all data samples, save the result.
-        #       Note: we'll need merge_distances and distance_differences lists to make plots (clusterization.py)
 
         with tqdm() as pbar:
             while not self.stop():
@@ -188,14 +176,6 @@ class AgglomerativeClustering:
 
                 self.distances[cluster_2, :] = self.self_distance_value
                 self.distances[:, cluster_2] = self.self_distance_value
-
-                """
-                print(f'new_distances: {new_distances.shape}\n{new_distances}')
-
-                print(f'new cluster: \n{self.clusters[cluster_1]}')
-                print(f'all indices: {all_indices.shape}\n{all_indices}')
-                print(f'other clusters: {other_clusters.shape}\n{other_clusters}')
-                """
 
                 pbar.set_description(
                     f'Merged clusters: {cluster_1} and {cluster_2}'

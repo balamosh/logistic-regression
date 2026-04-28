@@ -16,8 +16,7 @@ def accuracy_score(targets: np.ndarray, predictions: np.ndarray) -> float:
         targets: True labels.
         predictions: Predicted class.
     """
-    # TODO: Implement computation of accuracy using the formula from the docstring, return the result
-    raise NotImplementedError
+    return np.mean(predictions == targets)
 
 
 def precision_score(targets: np.ndarray, predictions: np.ndarray) -> float:
@@ -33,8 +32,9 @@ def precision_score(targets: np.ndarray, predictions: np.ndarray) -> float:
         targets: True labels.
         predictions: Predicted class.
     """
-    # TODO: Implement computation of precision score using the formula from the docstring, return the result
-    raise NotImplementedError
+    TP = np.sum(predictions[targets == 1] == 1)
+    FP = np.sum(predictions[targets == 0] == 1)
+    return TP / (TP + FP) if TP + FP != 0 else 0
 
 
 def recall_score(targets: np.ndarray, predictions: np.ndarray) -> float:
@@ -50,8 +50,10 @@ def recall_score(targets: np.ndarray, predictions: np.ndarray) -> float:
         targets: True labels.
         predictions: Predicted class.
     """
-    # TODO: Implement computation of recall score using the formula from the docstring, return the result
-    raise NotImplementedError
+    mask = targets == 1
+    TP = np.sum(predictions[mask] == 1)
+    FN = np.sum(predictions[mask] == 0)
+    return TP / (TP + FN)
 
 
 def confusion_matrix(targets: np.ndarray, predictions: np.ndarray):
@@ -67,8 +69,10 @@ def confusion_matrix(targets: np.ndarray, predictions: np.ndarray):
         targets: True labels.
         predictions: Predicted class.
     """
-    # TODO: Make confusion matrix using the formula from the docstring, return the result
-    raise NotImplementedError
+    classes_num = len(np.unique(targets))
+    confusion_matrix = np.zeros((classes_num, classes_num))
+    np.add.at(confusion_matrix, (targets, predictions), 1)
+    return confusion_matrix
 
 
 def precision_recall_curve(targets: np.ndarray, scores: np.ndarray) -> (np.ndarray, np.ndarray, np.ndarray):
